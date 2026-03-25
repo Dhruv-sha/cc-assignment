@@ -1,0 +1,15 @@
+# Node
+node_modules/
+
+# Runtime data file — do not commit, it is created/managed at runtime
+backend/data.json
+
+# SSH key — NEVER commit .pem files
+*.pem
+
+# Terraform
+.terraform/
+.terraform.lock.hcl
+*.tfstate
+*.tfstate.backup
+*.tfvars

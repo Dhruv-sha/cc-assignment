@@ -1,16 +1,46 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>TaskFlow</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Space+Grotesk:wght@400;500;700&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <h1>🚀 TaskFlow</h1>
+  <main class="app-shell">
+    <section class="card">
+      <header class="hero">
+        <p class="eyebrow">Productivity Simplified</p>
+        <h1>TaskFlow</h1>
+        <p class="subtitle">Capture tasks fast, stay focused, and close your day with momentum.</p>
+      </header>
 
-  <input id="taskInput" placeholder="Enter task..." />
-  <button onclick="addTask()">Add</button>
+      <section class="composer" aria-label="Create a new task">
+        <input id="taskInput" placeholder="What needs to get done today?" />
+        <button id="addBtn" onclick="addTask()">Add Task</button>
+      </section>
 
-  <ul id="taskList"></ul>
+      <section class="stats" aria-label="Task statistics">
+        <div>
+          <span class="stat-label">Total</span>
+          <strong id="totalCount">0</strong>
+        </div>
+        <div>
+          <span class="stat-label">Completed</span>
+          <strong id="completedCount">0</strong>
+        </div>
+      </section>
+
+      <ul id="taskList" aria-live="polite"></ul>
+      <p id="emptyState">No tasks yet. Add one to begin.</p>
+    </section>
+  </main>
 
   <script src="script.js"></script>
 </body>

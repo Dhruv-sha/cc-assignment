@@ -3,16 +3,19 @@ provider "aws" {
 }
 
 resource "aws_security_group" "node_app_sg" {
-  name = "node-app-sg"
+  name        = "node-app-sg"
+  description = "Allow HTTP on port 3000 and SSH"
 
   ingress {
-    from_port   = 5000
-    to_port     = 5000
+    description = "App port"
+    from_port   = 3000
+    to_port     = 3000
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
   }
 
   ingress {
+    description = "SSH"
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
@@ -25,17 +28,21 @@ resource "aws_security_group" "node_app_sg" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
+
+  tags = {
+    Name = "node-app-sg"
+  }
 }
 
 resource "aws_instance" "node_app" {
-  ami           = "ami-0f58b397bc5c1f2e8"
-  instance_type = "t2.micro"
-  key_name      = "your-key-name"
-
-  security_groups = [aws_security_group.node_app_sg.name]
+  ami                    = "ami-0f58b397bc5c1f2e8"
+  instance_type          = "t2.micro"
+  key_name               = "dhruv"
+  vpc_security_group_ids = [aws_security_group.node_app_sg.id]
 
   user_data = <<-EOF
               #!/bin/bash
+              set -e
 
               # Update system
               yum update -y
@@ -48,22 +55,22 @@ resource "aws_instance" "node_app" {
               # Install Git
               yum install git -y
 
-              # Go to home
-              cd /home/ec2-user
-
               # Clone repo
-              git clone https://github.com/YOUR_USERNAME/YOUR_REPO.git
+              cd /home/ec2-user
+              git clone https://github.com/Dhruv-sha/cc-assignment.git app
+              cd app
 
-              cd YOUR_REPO
-
-              # Build Docker image
+              # Build and run Docker container
               docker build -t cc-assignment .
-
-              # Run container
-              docker run -d -p 5000:5000 cc-assignment
+              docker run -d -p 3000:3000 --restart unless-stopped cc-assignment
               EOF
 
   tags = {
     Name = "NodeDockerApp"
   }
+}
+
+output "app_url" {
+  description = "Public URL of the running app"
+  value       = "http://${aws_instance.node_app.public_ip}:3000"
 }
