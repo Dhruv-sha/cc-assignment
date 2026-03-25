@@ -1,0 +1,15 @@
+body {
+  font-family: Arial;
+  text-align: center;
+  background: #111;
+  color: white;
+}
+
+input {
+  padding: 10px;
+}
+
+li {
+  margin: 10px;
+  cursor: pointer;
+}
